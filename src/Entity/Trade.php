@@ -43,6 +43,11 @@ class Trade
      */
     private $items;
 
+    public function __toString()
+    {
+        return 'Trade n°' . $this->getId();
+    }
+
     public function __construct()
     {
         $this->items = new ArrayCollection();
