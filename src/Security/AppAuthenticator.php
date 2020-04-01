@@ -94,9 +94,18 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('easyadmin'));
-        // TODO REDIRECT ADMIN TO ADMIN AND USER TO FRONT !!!
-        //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
+        $roles = $token->getRoles();
+
+        $rolesTab = array_map(function ($role) {
+            return $role->getRole();
+        }, $roles);
+
+
+        if (in_array('ROLE_ADMIN', $rolesTab, true)) {
+            return new RedirectResponse($this->urlGenerator->generate('easyadmin'));
+        } else {
+            return new RedirectResponse($this->urlGenerator->generate('index'));
+        }
     }
 
     protected function getLoginUrl()

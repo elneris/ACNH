@@ -36,3 +36,6 @@ security:
     access_control:
          - { path: ^/adminac, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER

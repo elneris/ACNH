@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MemberRepository")
+ * @UniqueEntity(fields={"email"}, message="Cet email est déjà utilisé !")
  */
 class Member implements UserInterface
 {
@@ -46,9 +48,20 @@ class Member implements UserInterface
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=12, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Length(
+     *      max = 12,
+     *      min = 12,
+     *      maxMessage = "le code ami doit contenir 12 chiffres",
+     *      minMessage = "le code ami doit 12 chiffres"
+     * )
      */
-    private $switchCode;
+    private $switchCode = null;
+
+    public function __construct()
+    {
+        $this->roles = ['ROLE_USER'];
+    }
 
     public function getId(): ?int
     {

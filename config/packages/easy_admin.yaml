@@ -1,4 +1,6 @@
 easy_admin:
+    site_name:
+        '<a href="/"><img src="/assets/img/logo.png" /></a>'
     entities:
         # List the entity class name you want to manage
         - App\Entity\Trade

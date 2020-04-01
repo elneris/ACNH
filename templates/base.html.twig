@@ -17,9 +17,17 @@
         {% endblock %}
     </head>
     <body>
+
+        {% include 'inc/_header.html.twig' %}
+
+        {% if app.request.requestUri != '/' and app.request.requestUri != '/home' %}
+            <div class="intro-page"></div>
+        {% endif %}
+
         {% block body %}
         {% endblock %}
 
+        {% include 'inc/_footer.html.twig' %}
         {% block javascripts %}
             <script type="text/javascript">
                 window.odometerOptions = {

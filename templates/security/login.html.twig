@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block body %}
 <form method="post">
@@ -31,6 +31,7 @@
                                value="{{ csrf_token('authenticate') }}"
                         >
                         <button class="btn btn btn-primary mt-5" type="submit">Se connecter</button>
+                        <a class="btn btn btn-primary mt-5" href="{{ path('member_registration') }}">S'inscrire</a>
                     </div>
                 </div>
             </div>
