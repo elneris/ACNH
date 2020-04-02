@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Market place{% endblock %}
+
+{% block body %}
+    <div class="wrapper">
+        <section class="four-elements">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="four-elements--image"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                        <h3>Vendre des navets</h3>
+                        <p>Vous avez un taux de navet inféfieur à la moyenne et voulez en faire profiter la communauté ?
+                            Attention, sauf si TT, veuillez à être dimanche entre 9h et 11h30 par précaution</p>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="four-elements--image"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                        <h3>Acheter des navets</h3>
+                        <p>Vous voulez acheter des navets mais votre taux est à votre gout trop élevé ? Accéder à la
+                            liste des ventes de navets</p>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="{{ path('app_market_create_trade') }}">
+                            <div class="four-elements--image"><i class="fa fa-plus" aria-hidden="true"></i></div>
+                            <h3>Ouvrir votre île</h3>
+                        </a>
+                            <p>Jackpot !!! Votre taux de revente est de 500 ou plus ? Invitez les gens à revendre chez
+                                vous moyennant un %, une pépite ou bien gratuitement si vous êtes juste généreux</p>
+
+                    </div>
+                    <div class="col-md-3">
+                        <div class="four-elements--image"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                        <h3>Rechercher une île</h3>
+                        <p>Vous venez de dépensez 1 000 000 de clochette. Il est temps de trouver la meilleur offre de
+                            revente et gagner des millions ! Attention, une contrepartie pourrait être demander</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

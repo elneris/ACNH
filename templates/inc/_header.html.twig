@@ -5,24 +5,24 @@
         </div>
         <div class="menu">
             <ul>
-                <li><a href="{{ path('home') }}" class="active">Accueil</a></li>
+                <li><a href="{{ path('home') }}"{% if app.request.requestUri == '/' or app.request.requestUri == '/home' %} class="active"{% endif %}>Accueil</a></li>
                 {% if app.user %}
-                    <li><a href="">Market</a></li>
+                    <li><a href="{{ path('app_market') }}"{% if app.request.requestUri == '/market' %} class="active"{% endif %}>Market</a></li>
                 {% endif %}
 
-                <li><a href="">A propos</a></li>
-                <li><a href="">Contact</a></li>
+                <li><a href=""{% if app.request.requestUri == '/about' %} class="active"{% endif %}>A propos</a></li>
+                <li><a href=""{% if app.request.requestUri == '/contact' %} class="active"{% endif %}>Contact</a></li>
 
                 {% if app.user %}
                     {% if 'ROLE_ADMIN' in app.user.roles %}
                     <li><a href="{{ path('easyadmin') }}">Admin</a></li>
                         {% else %}
-                            <li><a href="">Mon espace</a></li>
+                            <li><a href=""{% if app.request.requestUri == '/mon-espace' %} class="active"{% endif %}>Mon espace</a></li>
                     {% endif %}
                             <li><a href="{{ path('app_logout') }}">Se déconnecter</a></li>
                 {% else %}
-                    <li><a href="{{ path('app_login') }}">Se connecter</a></li>
-                    <li><a href="{{ path('member_registration') }}">Inscription</a></li>
+                    <li><a href="{{ path('app_login') }}"{% if app.request.requestUri == '/login' %} class="active"{% endif %}>Se connecter</a></li>
+                    <li><a href="{{ path('member_registration') }}"{% if app.request.requestUri == '/inscription' %} class="active"{% endif %}>Inscription</a></li>
                 {% endif %}
             </ul>
         </div>

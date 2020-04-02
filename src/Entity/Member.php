@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -58,9 +60,26 @@ class Member implements UserInterface
      */
     private $switchCode = null;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Trade", mappedBy="member")
+     */
+    private $trades;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Trade", mappedBy="memberParticipations")
+     */
+    private $tradeJoins;
+
+    public function __toString()
+    {
+        return $this->getUsername();
+    }
+
     public function __construct()
     {
         $this->roles = ['ROLE_USER'];
+        $this->trades = new ArrayCollection();
+        $this->tradeJoins = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -166,6 +185,65 @@ class Member implements UserInterface
     public function setSwitchCode(?string $switchCode): self
     {
         $this->switchCode = $switchCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trade[]
+     */
+    public function getTrades(): Collection
+    {
+        return $this->trades;
+    }
+
+    public function addTrade(Trade $trade): self
+    {
+        if (!$this->trades->contains($trade)) {
+            $this->trades[] = $trade;
+            $trade->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrade(Trade $trade): self
+    {
+        if ($this->trades->contains($trade)) {
+            $this->trades->removeElement($trade);
+            // set the owning side to null (unless already changed)
+            if ($trade->getMember() === $this) {
+                $trade->setMember(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trade[]
+     */
+    public function getTradeJoins(): Collection
+    {
+        return $this->tradeJoins;
+    }
+
+    public function addTradeJoin(Trade $tradeJoin): self
+    {
+        if (!$this->tradeJoins->contains($tradeJoin)) {
+            $this->tradeJoins[] = $tradeJoin;
+            $tradeJoin->addMemberParticipation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTradeJoin(Trade $tradeJoin): self
+    {
+        if ($this->tradeJoins->contains($tradeJoin)) {
+            $this->tradeJoins->removeElement($tradeJoin);
+            $tradeJoin->removeMemberParticipation($this);
+        }
 
         return $this;
     }

@@ -809,7 +809,7 @@ a, a:hover, button, button:hover, .btnborder, .btntop {
           transform: translateX(5px); }
 
 .keep-touch {
-  padding: 140px 0;
+  padding: 50px 0 150px 0px;
   text-align: center;
   position: relative;
   overflow: hidden;
