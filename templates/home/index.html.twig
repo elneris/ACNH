@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block body %}
+
+    <div class="home-slider">
+        <div class="home-slider--wrapper">
+            <div>
+                <div class="home-slider--wrapper__inner" style="background-image: url('{{ asset('assets/img/slider.jpg') }}')">
+                    <div class="container">
+                        <h4>Faciliter vos échanges, notre priorité</h4>
+                        <h1>BIENVENUE SUR ANIMAL CROSSING MARKET</h1>
+                        <span class="dot-dash">.</span>
+                        <p>Vous l'avez demandé ? AC Market l'a fait pour vous ! Le premier endroit pour venir acheter et vendre en toute simplicité vos navets. Alors n'attendez plus, devenez le meilleur tradeur d'ACNH !!! </p>
+                        <div class="slider-buttons">
+                            <a href="#" class="button">ACHETER</a>
+                            <a href="#" class="button button-w">VENDRE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="home-slider--wrapper__inner" style="background-image: url('{{ asset('assets/img/slider2.jpg') }}')">
+                    <div class="container">
+                        <h4>Faciliter vos échanges, notre priorité</h4>
+                        <h1>BIENVENUE SUR ANIMAL CROSSING MARKET</h1>
+                        <span class="dot-dash">.</span>
+                        <p>Vous l'avez demandé ? AC Market l'a fait pour vous ! Le premier endroit pour venir acheter et vendre en toute simplicité vos navets. Alors n'attendez plus, devenez le meilleur tradeur d'ACNH !!! </p>
+                        <div class="slider-buttons">
+                            <a href="#" class="button">TROUVER UNE ÎLE</a>
+                            <a href="#" class="button button-w">OUVRIR SON ÎLE</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="home-slider--nav">
+            <div class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></div>
+            <div class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></div>
+        </div>
+        <div class="home-slider--anchor">
+            <span><i class="fa fa-bell-o" aria-hidden="true"></i></span>
+        </div>
+    </div>
+
+    <div class="wrapper">
+        <section class="four-elements">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="four-elements--image"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                        <h3>Île ouverte</h3>
+                        <p>Accéder à la page des île, classez les par liste d'attentes, taux, ou popularité du propriétaire.</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="four-elements--image"><i class="fa fa-heart" aria-hidden="true"></i></div>
+                        <h3>Top AC Market</h3>
+                        <p>Accéder à tout type de classement allant du plus gros acheteur, au plus grand vendeurs ou encore celui qui est le mieux noté</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="four-elements--image"><i class="fa fa-area-chart" aria-hidden="true"></i></div>
+                        <h3>Ouvrir son île</h3>
+                        <p>Vous avez un taux énorme ? Et vous souhaité ouvrir votre île à la communauté moyennant des petites clochettes ou encore un super meuble japonais ? N'attendez plus, c'est par ici !</p>
+                    </div>
+                    <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="four-elements--image"><i class="fa fa-comments-o" aria-hidden="true"></i></div>
+                        <h3>Nous contacter</h3>
+                        <p>Une question ? un bug rencontrer ? Un remerciement aux développeurs, n'hésitez pas à nous envoyez votre demande via notre formulaire de contact.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="statistics">
+            <div class="container">
+                <div class="statistics--item">
+                    <div class="statistics--item__image"><i class="fa fa-user"></i></div>
+                    <h3>0</h3>
+                    <h5>Membre inscrit</h5>
+                </div>
+                <div class="statistics--item">
+                    <div class="statistics--item__image"><i class="fa fa-tag"></i></div>
+                    <h3>0</h3>
+                    <h5>Nombres de ventes</h5>
+                </div>
+                <div class="statistics--item">
+                    <div class="statistics--item__image"><i class="fa fa-shopping-cart"></i></div>
+                    <h3>0</h3>
+                    <h5>Total d'échanges</h5>
+                </div>
+                <div class="statistics--item">
+                    <div class="statistics--item__image"><i class="fa fa-star-o"></i></div>
+                    <h3>0</h3>
+                    <h5>Nombres de vote</h5>
+                </div>
+                <div class="statistics--item">
+                    <div class="statistics--item__image"><i class="fa fa-trophy"></i></div>
+                    <h3>0</h3>
+                    <h5>Meilleur taux de revente</h5>
+                </div>
+            </div>
+        </section>
+
+        <section class="our-pricing">
+            <div class="container">
+                <h2>Vente en cours</h2>
+
+                <span class="dot-dash dark">.</span>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="our-pricing--package">
+                            <h3>ELNERIS</h3>
+                            <div class="our-pricing--package__data">
+                                <span><b>561</b>Clochettes</span>
+                                <ul>
+                                    <li>10%</li>
+                                    <li>Pépite d'or</li>
+                                    <li>Miles Nook</li>
+                                    <li>Meubles</li>
+                                </ul>
+                                <a href="#" class="button small">Je participe</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="our-pricing--package starred">
+                            <h3>PSEUDO</h3>
+                            <div class="our-pricing--package__data">
+                                <span><b>1000</b>Clochettes</span>
+                                <ul>
+                                    <li>20%</li>
+                                    <li> 4 Pépite d'or</li>
+                                    <li>10 Miles Nook</li>
+                                    <li>Meubles</li>
+                                </ul>
+                                <a href="#" class="button small">Je participe</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="our-pricing--package">
+                            <h3>NOOK</h3>
+                            <div class="our-pricing--package__data">
+                                <span><b>514</b>Clochettes</span>
+                                <ul>
+                                    <li>10%</li>
+                                    <li>Pépite d'or</li>
+                                    <li>Miles Nook</li>
+                                    <li>Meubles</li>
+                                </ul>
+                                <a href="#" class="button small">Je participe</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% if not app.user %}
+        <section class="get-started">
+            <div class="container">
+                <h2>Pas encore inscrit ? It's FREE !</h2>
+                <a href="{{ path('member_registration') }}" class="button">S'inscrire</a>
+            </div>
+        </section>
+        {% endif %}
+    </div>
+{% endblock %}

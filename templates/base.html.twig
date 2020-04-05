@@ -1,12 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="Animal Crossing market place">
+        <meta name="author" content="Elneris Dang">
+        <title>{% block title %}AC - Market{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('css/vendor/bootstrap.css') }}" rel="stylesheet" />
+            <link href="{{ asset('css/vendor/font-awesome.css') }}" rel="stylesheet" />
+            <link href="{{ asset('css/vendor/slick.css') }}" rel="stylesheet" />
+            <link href="{{ asset('css/vendor/slick-theme.css') }}" rel="stylesheet" />
+            <link href="{{ asset('css/vendor/odometer-theme-default.css') }}" rel="stylesheet" />
+            <link href="{{ asset('css/main.css') }}" rel="stylesheet" />
+            {{  encore_entry_link_tags('app') }}
+        {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
+
+        {% include 'inc/_header.html.twig' %}
+
+        {% if app.request.requestUri != '/' and app.request.requestUri != '/home' %}
+            <div class="intro-page"></div>
+        {% endif %}
+
+
+
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+
+
+
+        {% block body %}
+        {% endblock %}
+
+        {% include 'inc/_footer.html.twig' %}
+        {% block javascripts %}
+            <script type="text/javascript">
+                window.odometerOptions = {
+                    format: '(,ddd)',
+                };
+            </script>
+            <script src="{{ asset('js/vendor/jquery-3.1.0.min.js') }}"></script>
+            <script src="{{ asset('js/vendor/jquery.easing.min.js') }}"></script>
+            <script src="{{ asset('js/vendor/tether.js') }}"></script>
+            <script src="{{ asset('js/vendor/bootstrap.js') }}"></script>
+            <script src="{{ asset('js/vendor/slick.js') }}"></script>
+            <script src="{{ asset('js/vendor/isotope.pkgd.min.js') }}"></script>
+            <script src="{{ asset('js/vendor/odometer.min.js') }}"></script>
+            <script src="{{ asset('js/main.js') }}"></script>
+            {{  encore_entry_script_tags('app') }}
+        {% endblock %}
     </body>
 </html>

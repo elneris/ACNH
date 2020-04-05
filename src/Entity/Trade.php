@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,11 +21,14 @@ class Trade
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $price;
 
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
+     * @Assert\Length(5)
+     * @Assert\Regex(pattern="/[A-Z0-9 ]+/", match=true, message="Majuscule et chiffre seulement autorisé")
      */
     private $dodoCode;
 
@@ -39,7 +43,18 @@ class Trade
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Item")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Member", inversedBy="trades")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $member;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Member", inversedBy="tradeJoins")
+     */
+    private $memberParticipations;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Item", mappedBy="trades")
      */
     private $items;
 
@@ -50,6 +65,7 @@ class Trade
 
     public function __construct()
     {
+        $this->memberParticipations = new ArrayCollection();
         $this->items = new ArrayCollection();
     }
 
@@ -106,6 +122,44 @@ class Trade
         return $this;
     }
 
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(?Member $member): self
+    {
+        $this->member = $member;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Member[]
+     */
+    public function getMemberParticipations(): Collection
+    {
+        return $this->memberParticipations;
+    }
+
+    public function addMemberParticipation(Member $memberParticipation): self
+    {
+        if (!$this->memberParticipations->contains($memberParticipation)) {
+            $this->memberParticipations[] = $memberParticipation;
+        }
+
+        return $this;
+    }
+
+    public function removeMemberParticipation(Member $memberParticipation): self
+    {
+        if ($this->memberParticipations->contains($memberParticipation)) {
+            $this->memberParticipations->removeElement($memberParticipation);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection|Item[]
      */
@@ -118,6 +172,7 @@ class Trade
     {
         if (!$this->items->contains($item)) {
             $this->items[] = $item;
+            $item->addTrade($this);
         }
 
         return $this;
@@ -127,6 +182,7 @@ class Trade
     {
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
+            $item->removeTrade($this);
         }
 
         return $this;

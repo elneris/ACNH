@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ouvrir son île{% endblock %}
+
+{% form_theme form _self %}
+
+{%- block choice_widget_expanded -%}
+    {%- for key, child in form %}
+        <div class="form-check form-check-inline">
+            {{- form_widget(child, { 'attr': {'class': 'form-check-input'}}) -}}
+            <label class="form-check-label" for="trade_items_{{ key }}"> {{ child.vars.label }} </label>
+        </div>
+    {% endfor -%}
+{%- endblock choice_widget_expanded -%}
+
+{% block body %}
+    {% if app.user %}
+        <section class="keep-touch">
+            <div class="container">
+                <h2>Ouvrir son île</h2>
+                <p>Renseigné un maximum d'information avant de valider</p>
+                <span class="dot-dash dark">.</span>
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-md-8 offset-2">
+                        <div class="">
+                            <div class="form-group">
+                                {{ form_row(form.price, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.description, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_row(form.dodoCode, { 'attr': {'class': 'form-control'} }) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.status) }}
+                                {{ form(form.status) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_widget(form.items) }}
+                            </div>
+
+                            {{ form_row(form._token) }}
+                            <button type="submit" class="btn btn-primary">Créer</button>
+
+                        </div>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </section>
+    {% else %}
+        <section class="keep-touch">
+            <div class="container">
+                <h2>Vous n'êtes pas connecté</h2>
+                <p><a href="{{ path('index') }}">Retourner à l'accueil</a></p>
+                <span class="dot-dash dark">.</span>
+            </div>
+        </section>
+    {% endif %}
+{% endblock %}

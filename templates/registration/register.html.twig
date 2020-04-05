@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+
+    {% if app.user %}
+        <section class="keep-touch">
+            <div class="container">
+                <h2>Vous êtes déjà connecté {{ app.user.username }}</h2>
+                <p><a href="{{ path('index') }}">Retourner à l'accueil</a></p>
+                <span class="dot-dash dark">.</span>
+            </div>
+        </section>
+    {% else %}
+        {{ form_start(form) }}
+        <section class="keep-touch">
+            <div class="container">
+                <h2>Inscription</h2>
+                <p>Le monde de la bourse n'attends que vous</p>
+                <span class="dot-dash dark">.</span>
+                <div class="row">
+                    <div class="col-md-8 offset-2">
+                        <div class="keep-touch--white">
+                            {{ form_row(form.username) }}
+                            {{ form_row(form.email) }}
+                            {{ form_row(form.switchCode) }}
+                            {{ form_row(form.plainPassword.first) }}
+                            {{ form_row(form.plainPassword.second) }}
+                            <button class="btn btn btn-primary mt-5" type="submit">S'inscrire</button>
+                            <a class="btn btn btn-primary mt-5" href="{{ path('app_login') }}">Déjà inscrit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        {{ form_end(form) }}
+    {% endif %}
+
+{% endblock %}
