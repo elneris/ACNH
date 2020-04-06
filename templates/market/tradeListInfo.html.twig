@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Market place{% endblock %}
+
+{% block body %}
+    <div class="our-pricing">
+        <div class="container mb-5">
+            <h2>Île en cours d'ouverture</h2>
+
+            <span class="dot-dash dark">.</span>
+            <div class="row mb-5">
+                <div class="col-md-4 align-items-center">
+                    <div class="our-pricing--package">
+                        <h3>{{ trade.member }}</h3>
+                        <div class="our-pricing--package__data">
+                            <span><b>{{ trade.price }}</b>Clochettes</span>
+                            <ul>
+                                {% for item in trade.items %}
+                                <li>{{ item }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 align-items-center">
+                    <div class="our-pricing--package">
+                        <h3>{{ trade.memberParticipations | length }} Inscrits</h3>
+                        <div class="our-pricing--package__data">
+                            <div class="m-4 p-4">
+                                {% if trade.description %}
+                                    <p>{{ trade.description | raw}}</p>
+                                {% else %}
+                                    <h5> Aucune description renseigné par le marchand. Pensez tout de même à le remercier :)</h5>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="button small">Je participe</a>
+        </div>
+    </div>
+{% endblock %}

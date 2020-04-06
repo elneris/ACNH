@@ -7,7 +7,7 @@
             <ul>
                 <li><a href="{{ path('home') }}"{% if app.request.requestUri == '/' or app.request.requestUri == '/home' %} class="active"{% endif %}>Accueil</a></li>
                 {% if app.user %}
-                    <li><a href="{{ path('app_market') }}"{% if app.request.requestUri == '/market' %} class="active"{% endif %}>Market</a></li>
+                    <li><a href="{{ path('market_index') }}"{% if app.request.requestUri == '/market' %} class="active"{% endif %}>Market</a></li>
                 {% endif %}
 
                 <li><a href=""{% if app.request.requestUri == '/about' %} class="active"{% endif %}>A propos</a></li>

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Market place{% endblock %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="container mt-5 mb-5">
+            <table class="table table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Marchand</th>
+                    <th scope="col">Taux du navet</th>
+                    <th scope="col">Total d'inscrits</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for trade in trades %}
+                <tr>
+                    <td>{{ trade.member }}</td>
+                    <td>{{ trade.price }}</td>
+                    <td>{{ trade.memberParticipations | length }}</td>
+                    <td><a href="{{ path('market_trade_list_info', {'id': trade.id }) }}">Voir plus</a> </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -20,17 +20,19 @@
                             liste des ventes de navets</p>
                     </div>
                     <div class="col-md-3">
-                        <a href="{{ path('app_market_create_trade') }}">
+                        <a href="{{ path('market_create_trade') }}">
                             <div class="four-elements--image"><i class="fa fa-plus" aria-hidden="true"></i></div>
                             <h3>Ouvrir votre île</h3>
                         </a>
-                            <p>Jackpot !!! Votre taux de revente est de 500 ou plus ? Invitez les gens à revendre chez
-                                vous moyennant un %, une pépite ou bien gratuitement si vous êtes juste généreux</p>
+                        <p>Jackpot !!! Votre taux de revente est de 500 ou plus ? Invitez les gens à revendre chez
+                            vous moyennant un %, une pépite ou bien gratuitement si vous êtes juste généreux</p>
 
                     </div>
                     <div class="col-md-3">
-                        <div class="four-elements--image"><i class="fa fa-eye" aria-hidden="true"></i></div>
-                        <h3>Rechercher une île</h3>
+                        <a href="{{ path('market_trade_list') }}">
+                            <div class="four-elements--image"><i class="fa fa-eye" aria-hidden="true"></i></div>
+                            <h3>Rechercher une île</h3>
+                        </a>
                         <p>Vous venez de dépensez 1 000 000 de clochette. Il est temps de trouver la meilleur offre de
                             revente et gagner des millions ! Attention, une contrepartie pourrait être demander</p>
                     </div>

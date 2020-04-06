@@ -4,6 +4,7 @@ namespace App\Form\Market;
 
 use App\Entity\Item;
 use App\Entity\Trade;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -32,7 +33,7 @@ class TradeType extends AbstractType
                 'multiple' => true,
                 'expanded' => true
             ])
-            ->add('description')
+            ->add('description', CKEditorType::class)
         ;
     }
 
