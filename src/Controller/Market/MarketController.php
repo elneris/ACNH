@@ -76,7 +76,28 @@ class MarketController extends AbstractController
     {
         $trade = $tradeRepository->findOneById($id);
 
+        if ($request->get('submit')) {
+            $user = $this->getUser();
+            $trade->addMemberParticipation($user);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('market_trade_list_waiting', ['id' => $id]);
+        }
         return $this->render('market/tradeListInfo.html.twig', [
+            'trade' => $trade
+        ]);
+    }
+
+    /**
+     * @Route("/trade/{id}/liste-attente", name="trade_list_waiting")
+     */
+    public function tradeListWainting($id, TradeRepository $tradeRepository)
+    {
+        $trade = $tradeRepository->findOneById($id);
+
+        return $this->render('market/tradeListWaiting.html.twig', [
             'trade' => $trade
         ]);
     }

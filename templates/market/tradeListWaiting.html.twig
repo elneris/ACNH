@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Market place{% endblock %}
+
+{% block body %}
+    <div class="wrapper">
+        <div class="container mt-5 mb-5">
+            <table class="table table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Participant</th>
+                    <th scope="col">Ordre</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, member in trade.memberParticipations %}
+                <tr>
+                    <td>{{ member.username }}</td>
+                    <td>{{ key + 1  }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
