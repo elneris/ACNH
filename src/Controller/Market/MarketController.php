@@ -77,41 +77,6 @@ class MarketController extends AbstractController
     public function tradeListInfo($id, Request $request, TradeRepository $tradeRepository, TradeMemberParticipationRepository $participationRepository)
     {
         $trade = $tradeRepository->findOneById($id);
-        $user = $this->getUser();
-        $alreadyFollow = $participationRepository->findOneBy(['member' => $user, 'trade' => $trade]);
-        $em = $this->getDoctrine()->getManager();
-
-        if ($request->get('submit')) {
-            if (!$alreadyFollow) {
-                if ($user !== $trade->getMember()) {
-                    $memberParticipation = new TradeMemberParticipation();
-                    $memberParticipation->setMember($user);
-                    $memberParticipation->setTrade($trade);
-                    $memberParticipation->setCreatedAt(new \DateTime());
-                    $memberParticipation->setStatus(0);
-
-                    $em->persist($memberParticipation);
-
-                    $trade->addTradeMemberParticipation($memberParticipation);
-                    $em->flush();
-                    $this->addFlash('success', 'Inscription bien prise en compte');
-                } else {
-                    $this->addFlash('danger', 'Vous ne pouvez pas participer ! Vous êtes le créateur ...');
-                }
-            } else {
-                $this->addFlash('danger', 'Vous ne pouvez pas participer ! Vous êtes déjà inscrit ...');
-            }
-        }
-
-        if ($request->get('unsubscribe')) {
-            if ($alreadyFollow) {
-                $em->remove($alreadyFollow);
-                $em->flush();
-                $this->addFlash('success', 'Désinscription bien prise en compte');
-            } else {
-                $this->addFlash('danger', 'Une erreur est intervenue, veuillez nous excusez du désagrément');
-            }
-        }
 
         return $this->render('market/tradeListInfo.html.twig', [
             'trade' => $trade
@@ -144,5 +109,59 @@ class MarketController extends AbstractController
         return $this->render('market/editTrade.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/trade-sub/{id}", name="trade_sub")
+     */
+    public function tradeSub($id, TradeRepository $tradeRepository, TradeMemberParticipationRepository $participationRepository)
+    {
+        $trade = $tradeRepository->findOneById($id);
+        $user = $this->getUser();
+        $alreadyFollow = $participationRepository->findOneBy(['member' => $user, 'trade' => $trade]);
+        $em = $this->getDoctrine()->getManager();
+
+        if (!$alreadyFollow) {
+            if ($user !== $trade->getMember()) {
+                $memberParticipation = new TradeMemberParticipation();
+                $memberParticipation->setMember($user);
+                $memberParticipation->setTrade($trade);
+                $memberParticipation->setCreatedAt(new \DateTime());
+                $memberParticipation->setStatus(0);
+
+                $em->persist($memberParticipation);
+
+                $trade->addTradeMemberParticipation($memberParticipation);
+                $em->flush();
+                $this->addFlash('success', 'Inscription bien prise en compte');
+            } else {
+                $this->addFlash('danger', 'Vous ne pouvez pas participer ! Vous êtes le créateur ...');
+            }
+        } else {
+            $this->addFlash('danger', 'Vous ne pouvez pas participer ! Vous êtes déjà inscrit ...');
+        }
+
+        return $this->redirectToRoute('market_trade_list_info', ['id' => $id]);
+    }
+
+    /**
+     * @Route("/trade-unsub/{id}", name="trade_unsub")
+     */
+    public function tradeUnsub($id, TradeRepository $tradeRepository, TradeMemberParticipationRepository $participationRepository)
+    {
+        $trade = $tradeRepository->findOneById($id);
+        $user = $this->getUser();
+        $alreadyFollow = $participationRepository->findOneBy(['member' => $user, 'trade' => $trade]);
+        $em = $this->getDoctrine()->getManager();
+
+        if ($alreadyFollow) {
+            $em->remove($alreadyFollow);
+            $em->flush();
+            $this->addFlash('success', 'Désinscription bien prise en compte');
+        } else {
+            $this->addFlash('danger', 'Une erreur est intervenue, veuillez nous excusez du désagrément');
+        }
+
+        return $this->redirectToRoute('market_trade_list_info', ['id' => $id]);
     }
 }

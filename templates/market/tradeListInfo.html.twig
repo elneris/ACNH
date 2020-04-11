@@ -3,6 +3,9 @@
 {% block title %}Market place{% endblock %}
 
 {% block body %}
+    {% if app.user == trade.getMember %}
+        {% set owner = true %}
+    {% endif %}
     <div class="our-pricing">
         <div class="container mb-5">
             <h2>Île en cours d'ouverture</h2>
@@ -24,7 +27,8 @@
                 </div>
                 <div class="col-md-8 align-items-center">
                     <div class="our-pricing--package">
-                        <h3><a href="/market/trade-liste/{{ trade.id }}#list" class="text-white">{{ trade.tradeMemberParticipations | length }} Inscrits</a></h3>
+                        <h3><a href="/market/trade-liste/{{ trade.id }}#list"
+                               class="text-white">{{ trade.tradeMemberParticipations | length }} Inscrits</a></h3>
 
                         <div class="our-pricing--package__data">
                             <div class="m-4 p-4">
@@ -40,7 +44,7 @@
                 </div>
             </div>
             <form action="" method="post">
-                {% if app.user == trade.getMember %}
+                {% if owner is defined %}
                     <a href="{{ path('market_trade_edit', {'id': trade.id }) }}" class="button small">Modifier</a>
                 {% else %}
                     {% set follow = 'no' %}
@@ -50,9 +54,11 @@
                         {% endif %}
                     {% endfor %}
                     {% if follow == 'yes' %}
-                        <button type="submit" name="unsubscribe" value="true" class="button small">Se désinscrire</button>
+                        <a href="{{ path('market_trade_unsub', {'id': trade.id }) }}" class="button small">Se
+                            désinscrire</a>
                     {% else %}
-                        <button type="submit" name="submit" value="true" class="button small">Je participe</button>
+                        <a href="{{ path('market_trade_sub', {'id': trade.id }) }}" class="button small">Je
+                            participe</a>
                     {% endif %}
                 {% endif %}
             </form>
@@ -67,20 +73,40 @@
                     <th scope="col">Date d'inscription</th>
                     <th scope="col">Ordre</th>
                     <th scope="col">Passé</th>
+
+                    {% if owner is defined %}
+                        <th scope="col">Action</th>
+                    {% endif %}
                 </tr>
                 </thead>
                 <tbody>
                 {% for key, member in trade.tradeMemberParticipations %}
-                    {% set today = "now"|date("m/d/Y H:i") %}
-                    {% set createdAt = member.createdAt | date("m/d/Y H:i") %}
-                    {% set difference = date(today).diff(date(createdAt)) %}
+                {% set today = "now"|date("m/d/Y H:i") %}
+                {% set createdAt = member.createdAt | date("m/d/Y H:i") %}
+                {% set difference = date(today).diff(date(createdAt)) %}
 
-                    <tr>
-                        <td>{{ member.member }}</td>
-                        <td>Depuis {% if difference.d > 0 %}{{ difference.d }} j {% endif %}{% if difference.h > 0 %}{{ difference.h }} h {% endif %}{{ difference.i }} min</td>
-                        <td>{{ key + 1 }}</td>
-                        <td>{% if member.status == true %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-ban text-danger"></i>{% endif %}</td>
-                    </tr>
+                <tr>
+                    <td>{{ member.member }}</td>
+                    <td>
+                        Depuis {% if difference.d > 0 %}{{ difference.d }} j {% endif %}{% if difference.h > 0 %}{{ difference.h }} h {% endif %}{{ difference.i }}
+                        min
+                    </td>
+                    <td>{{ key + 1 }}</td>
+                    <td>{% if member.status == true %}<i class="fa fa-check text-success"></i>{% else %}<i
+                                class="fa fa-ban text-danger"></i>{% endif %}</td>
+
+                    {% if owner is defined %}
+                        <td>
+                            {% if member.status == false %}
+                            <a href=""><i class="fa fa-envelope text-white mr-1 ml-1" data-toggle="tooltip" data-placement="top" title="Envoyer le Dodo Code"></i></a>
+                            <a href="{{ path('trade_owner_status_active', {'trade': trade.id, 'memberParticipation': member.id}) }}"><i class="fa fa-check text-warning mr-1 ml-1" data-toggle="tooltip" data-placement="top" title="Terminer et passer au suivant"></i></a>
+                            {% else %}
+                            <a href="{{ path('trade_owner_status_inactive', {'trade': trade.id, 'memberParticipation': member.id}) }}"><i class="fa fa-times text-danger mr-1 ml-1" data-toggle="tooltip" data-placement="top" title="Retour sur l'état du participant"></i></a>
+                            {% endif %}
+                        </td>
+                    {% endif %}
+
+                </tr>
                 </tbody>
                 {% endfor %}
             </table>
