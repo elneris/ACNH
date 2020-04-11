@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\Trade;
+use App\Entity\TradeMemberParticipation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * @method Trade|null find($id, $lockMode = null, $lockVersion = null)
- * @method Trade|null findOneBy(array $criteria, array $orderBy = null)
- * @method Trade[]    findAll()
- * @method Trade[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method TradeMemberParticipation|null find($id, $lockMode = null, $lockVersion = null)
+ * @method TradeMemberParticipation|null findOneBy(array $criteria, array $orderBy = null)
+ * @method TradeMemberParticipation[]    findAll()
+ * @method TradeMemberParticipation[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TradeRepository extends ServiceEntityRepository
+class TradeMemberParticipationRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Trade::class);
+        parent::__construct($registry, TradeMemberParticipation::class);
     }
 
     // /**
-    //  * @return TradeClass[] Returns an array of TradeClass objects
+    //  * @return TradeMemberParticipation[] Returns an array of TradeMemberParticipation objects
     //  */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TradeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TradeClass
+    public function findOneBySomeField($value): ?TradeMemberParticipation
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

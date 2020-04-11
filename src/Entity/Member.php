@@ -66,9 +66,9 @@ class Member implements UserInterface
     private $trades;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Trade", mappedBy="memberParticipations")
+     * @ORM\OneToMany(targetEntity="App\Entity\TradeMemberParticipation", mappedBy="member", orphanRemoval=true)
      */
-    private $tradeJoins;
+    private $tradeMemberParticipations;
 
     public function __toString()
     {
@@ -79,7 +79,7 @@ class Member implements UserInterface
     {
         $this->roles = ['ROLE_USER'];
         $this->trades = new ArrayCollection();
-        $this->tradeJoins = new ArrayCollection();
+        $this->tradeMemberParticipations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -221,28 +221,31 @@ class Member implements UserInterface
     }
 
     /**
-     * @return Collection|Trade[]
+     * @return Collection|TradeMemberParticipation[]
      */
-    public function getTradeJoins(): Collection
+    public function getTradeMemberParticipations(): Collection
     {
-        return $this->tradeJoins;
+        return $this->tradeMemberParticipations;
     }
 
-    public function addTradeJoin(Trade $tradeJoin): self
+    public function addTradeMemberParticipation(TradeMemberParticipation $tradeMemberParticipation): self
     {
-        if (!$this->tradeJoins->contains($tradeJoin)) {
-            $this->tradeJoins[] = $tradeJoin;
-            $tradeJoin->addMemberParticipation($this);
+        if (!$this->tradeMemberParticipations->contains($tradeMemberParticipation)) {
+            $this->tradeMemberParticipations[] = $tradeMemberParticipation;
+            $tradeMemberParticipation->setMember($this);
         }
 
         return $this;
     }
 
-    public function removeTradeJoin(Trade $tradeJoin): self
+    public function removeTradeMemberParticipation(TradeMemberParticipation $tradeMemberParticipation): self
     {
-        if ($this->tradeJoins->contains($tradeJoin)) {
-            $this->tradeJoins->removeElement($tradeJoin);
-            $tradeJoin->removeMemberParticipation($this);
+        if ($this->tradeMemberParticipations->contains($tradeMemberParticipation)) {
+            $this->tradeMemberParticipations->removeElement($tradeMemberParticipation);
+            // set the owning side to null (unless already changed)
+            if ($tradeMemberParticipation->getMember() === $this) {
+                $tradeMemberParticipation->setMember(null);
+            }
         }
 
         return $this;

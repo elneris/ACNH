@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,11 +19,14 @@ class TradeType extends AbstractType
     {
         $builder
             ->add('price', IntegerType::class)
-            ->add('dodoCode')
+            ->add('dodoCode', TextType::class, [
+                'help' => 'Vous pourrez le renseignez plus tard, mais pour ouvrir votre île, ce champs est requis',
+                'required' => false
+            ])
             ->add('status', ChoiceType::class, [
                 'choices' => [
-                    'oui' => true,
-                    'non' => false
+                    'non' => false,
+                    'oui' => true
                 ],
                 'label' => 'Activer maintenant'
             ])

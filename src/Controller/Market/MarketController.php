@@ -3,7 +3,9 @@
 namespace App\Controller\Market;
 
 use App\Entity\Trade;
+use App\Entity\TradeMemberParticipation;
 use App\Form\Market\TradeType;
+use App\Repository\TradeMemberParticipationRepository;
 use App\Repository\TradeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -72,33 +74,75 @@ class MarketController extends AbstractController
     /**
      * @Route("/trade-liste/{id}", name="trade_list_info")
      */
-    public function tradeListInfo($id, Request $request, TradeRepository $tradeRepository)
+    public function tradeListInfo($id, Request $request, TradeRepository $tradeRepository, TradeMemberParticipationRepository $participationRepository)
     {
         $trade = $tradeRepository->findOneById($id);
+        $user = $this->getUser();
+        $alreadyFollow = $participationRepository->findOneBy(['member' => $user, 'trade' => $trade]);
+        $em = $this->getDoctrine()->getManager();
 
         if ($request->get('submit')) {
-            $user = $this->getUser();
-            $trade->addMemberParticipation($user);
+            if (!$alreadyFollow) {
+                if ($user !== $trade->getMember()) {
+                    $memberParticipation = new TradeMemberParticipation();
+                    $memberParticipation->setMember($user);
+                    $memberParticipation->setTrade($trade);
+                    $memberParticipation->setCreatedAt(new \DateTime());
+                    $memberParticipation->setStatus(0);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+                    $em->persist($memberParticipation);
 
-            return $this->redirectToRoute('market_trade_list_waiting', ['id' => $id]);
+                    $trade->addTradeMemberParticipation($memberParticipation);
+                    $em->flush();
+                    $this->addFlash('success', 'Inscription bien prise en compte');
+                } else {
+                    $this->addFlash('danger', 'Vous ne pouvez pas participer ! Vous êtes le créateur ...');
+                }
+            } else {
+                $this->addFlash('danger', 'Vous ne pouvez pas participer ! Vous êtes déjà inscrit ...');
+            }
         }
+
+        if ($request->get('unsubscribe')) {
+            if ($alreadyFollow) {
+                $em->remove($alreadyFollow);
+                $em->flush();
+                $this->addFlash('success', 'Désinscription bien prise en compte');
+            } else {
+                $this->addFlash('danger', 'Une erreur est intervenue, veuillez nous excusez du désagrément');
+            }
+        }
+
         return $this->render('market/tradeListInfo.html.twig', [
             'trade' => $trade
         ]);
     }
 
     /**
-     * @Route("/trade/{id}/liste-attente", name="trade_list_waiting")
+     * @Route("/trade-edit/{id}", name="trade_edit")
      */
-    public function tradeListWainting($id, TradeRepository $tradeRepository)
+    public function tradeEdit($id, Request $request, TradeRepository $tradeRepository)
     {
         $trade = $tradeRepository->findOneById($id);
 
-        return $this->render('market/tradeListWaiting.html.twig', [
-            'trade' => $trade
+        $form = $this->createForm(TradeType::class, $trade, []);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'l\'opération a bien été modifié'
+            );
+            return $this->redirectToRoute('market_trade_list_info', ['id' => $id]);
+        }
+
+        return $this->render('market/editTrade.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }

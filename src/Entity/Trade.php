@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TradeRepository")
+ * @App\Validator\TradeClass
  */
 class Trade
 {
@@ -49,24 +50,24 @@ class Trade
     private $member;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Member", inversedBy="tradeJoins")
-     */
-    private $memberParticipations;
-
-    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Item", mappedBy="trades")
      */
     private $items;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TradeMemberParticipation", mappedBy="trade", orphanRemoval=true)
+     */
+    private $tradeMemberParticipations;
+
     public function __toString()
     {
-        return 'Trade n°' . $this->getId();
+        return 'TradeClass n°' . $this->getId();
     }
 
     public function __construct()
     {
-        $this->memberParticipations = new ArrayCollection();
         $this->items = new ArrayCollection();
+        $this->tradeMemberParticipations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,32 +136,6 @@ class Trade
     }
 
     /**
-     * @return Collection|Member[]
-     */
-    public function getMemberParticipations(): Collection
-    {
-        return $this->memberParticipations;
-    }
-
-    public function addMemberParticipation(Member $memberParticipation): self
-    {
-        if (!$this->memberParticipations->contains($memberParticipation)) {
-            $this->memberParticipations[] = $memberParticipation;
-        }
-
-        return $this;
-    }
-
-    public function removeMemberParticipation(Member $memberParticipation): self
-    {
-        if ($this->memberParticipations->contains($memberParticipation)) {
-            $this->memberParticipations->removeElement($memberParticipation);
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Item[]
      */
     public function getItems(): Collection
@@ -183,6 +158,37 @@ class Trade
         if ($this->items->contains($item)) {
             $this->items->removeElement($item);
             $item->removeTrade($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TradeMemberParticipation[]
+     */
+    public function getTradeMemberParticipations(): Collection
+    {
+        return $this->tradeMemberParticipations;
+    }
+
+    public function addTradeMemberParticipation(TradeMemberParticipation $tradeMemberParticipation): self
+    {
+        if (!$this->tradeMemberParticipations->contains($tradeMemberParticipation)) {
+            $this->tradeMemberParticipations[] = $tradeMemberParticipation;
+            $tradeMemberParticipation->setTrade($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTradeMemberParticipation(TradeMemberParticipation $tradeMemberParticipation): self
+    {
+        if ($this->tradeMemberParticipations->contains($tradeMemberParticipation)) {
+            $this->tradeMemberParticipations->removeElement($tradeMemberParticipation);
+            // set the owning side to null (unless already changed)
+            if ($tradeMemberParticipation->getTrade() === $this) {
+                $tradeMemberParticipation->setTrade(null);
+            }
         }
 
         return $this;

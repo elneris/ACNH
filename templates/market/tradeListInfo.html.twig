@@ -16,7 +16,7 @@
                             <span><b>{{ trade.price }}</b>Clochettes</span>
                             <ul>
                                 {% for item in trade.items %}
-                                <li>{{ item }}</li>
+                                    <li>{{ item }}</li>
                                 {% endfor %}
                             </ul>
                         </div>
@@ -24,13 +24,15 @@
                 </div>
                 <div class="col-md-8 align-items-center">
                     <div class="our-pricing--package">
-                        <h3>{{ trade.memberParticipations | length }} Inscrits</h3>
+                        <h3><a href="/market/trade-liste/{{ trade.id }}#list" class="text-white">{{ trade.tradeMemberParticipations | length }} Inscrits</a></h3>
+
                         <div class="our-pricing--package__data">
                             <div class="m-4 p-4">
                                 {% if trade.description %}
-                                    <p>{{ trade.description | raw}}</p>
+                                    <p>{{ trade.description | raw }}</p>
                                 {% else %}
-                                    <h5> Aucune description renseigné par le marchand. Pensez tout de même à le remercier :)</h5>
+                                    <h5> Aucune description renseigné par le marchand. Pensez tout de même à le
+                                        remercier :)</h5>
                                 {% endif %}
                             </div>
                         </div>
@@ -38,9 +40,50 @@
                 </div>
             </div>
             <form action="" method="post">
-                <button type="submit" name="submit" value="true" class="button small">Je participe</button>
+                {% if app.user == trade.getMember %}
+                    <a href="{{ path('market_trade_edit', {'id': trade.id }) }}" class="button small">Modifier</a>
+                {% else %}
+                    {% set follow = 'no' %}
+                    {% for member in trade.tradeMemberParticipations %}
+                        {% if app.user == member.member %}
+                            {% set follow = 'yes' %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if follow == 'yes' %}
+                        <button type="submit" name="unsubscribe" value="true" class="button small">Se désinscrire</button>
+                    {% else %}
+                        <button type="submit" name="submit" value="true" class="button small">Je participe</button>
+                    {% endif %}
+                {% endif %}
             </form>
 
+        </div>
+
+        <div class="container mt-5 mb-5">
+            <table id="list" class="table table-bordered table-dark">
+                <thead>
+                <tr>
+                    <th scope="col">Participant</th>
+                    <th scope="col">Date d'inscription</th>
+                    <th scope="col">Ordre</th>
+                    <th scope="col">Passé</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for key, member in trade.tradeMemberParticipations %}
+                    {% set today = "now"|date("m/d/Y H:i") %}
+                    {% set createdAt = member.createdAt | date("m/d/Y H:i") %}
+                    {% set difference = date(today).diff(date(createdAt)) %}
+
+                    <tr>
+                        <td>{{ member.member }}</td>
+                        <td>Depuis {% if difference.d > 0 %}{{ difference.d }} j {% endif %}{% if difference.h > 0 %}{{ difference.h }} h {% endif %}{{ difference.i }} min</td>
+                        <td>{{ key + 1 }}</td>
+                        <td>{% if member.status == true %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-ban text-danger"></i>{% endif %}</td>
+                    </tr>
+                </tbody>
+                {% endfor %}
+            </table>
         </div>
     </div>
 {% endblock %}
